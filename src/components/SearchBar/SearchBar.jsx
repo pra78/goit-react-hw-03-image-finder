@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { SiPixabay } from 'react-icons/si';
 import { GoSearch } from 'react-icons/go';
 import { SearchBarSection, SearchForm, SearchFormButton, SearchFormInput } from './SearchBar.styled';
@@ -17,6 +18,10 @@ const SearchBar = ({onSubmit}) => {
         </SearchForm>
     </SearchBarSection>
     );
+}
+
+SearchBar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
 }
 
 export default SearchBar;

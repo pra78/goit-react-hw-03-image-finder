@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItemImageStyled, ImageGalleryItemStyled } from "./ImageGalleryItem.styled";
 
 const ImageGalleryItem = ({ pics, alt, onClick }) => {
@@ -7,6 +8,16 @@ const ImageGalleryItem = ({ pics, alt, onClick }) => {
         </ImageGalleryItemStyled >))
         
     );
+}
+
+ImageGalleryItem.propTypes = {
+    alt: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    pic: PropTypes.arrayOf(PropTypes.exact({
+        id: PropTypes.string.isRequired,
+        webformatURL: PropTypes.string.isRequired,
+        largeImageURL: PropTypes.string.isRequired,
+    }))
 }
 
 export default ImageGalleryItem;
