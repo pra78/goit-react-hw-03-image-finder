@@ -9,6 +9,8 @@ class App extends Component {
     photos: [],
     searchQuery: "",
     page: 1,
+    totalHits: 0,
+    picsShown: 0,
     isLoading: false,
     showModal: false,
     selectedImage: "",
@@ -21,20 +23,20 @@ class App extends Component {
   }
 
   loadPics = async () => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, });
     const { searchQuery, page } = this.state;
     const response = await fetchImages(searchQuery, page);
     const newPicturesArray = response.hits.map(({ id, webformatURL, largeImageURL }) => ({ id, webformatURL, largeImageURL, }));
-    this.setState((prevState) => ({ photos: [...prevState.photos, ...newPicturesArray], isLoading: false }));
+    this.setState((prevState) => ({ photos: [...prevState.photos, ...newPicturesArray], isLoading: false, picsShown: prevState.picsShown + response.hits.length, totalHits: response.totalHits, }));
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({ searchQuery: encodeURI(event.currentTarget.searchQuery.value), page: 1, photos: [] });
+    this.setState({ searchQuery: encodeURI(event.currentTarget.searchQuery.value), page: 1, photos: [], picsShown: 0, totalHits: 0 });
   }
 
   handleLoadMoreBtnClick = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState(prevState => ({ page: prevState.page + 1, }));
   }
 
   handlePictureClick = (largeImageURL) => {
@@ -47,9 +49,8 @@ class App extends Component {
   }
 
   render() {
-    const { photos, searchQuery, isLoading, showModal } = this.state;
-    console.log(photos.length);
-    const showLoadMoreBtn = photos.length >= 12 && !isLoading;
+    const { photos, searchQuery, isLoading, showModal, picsShown, totalHits, selectedImage } = this.state;
+    const showLoadMoreBtn = picsShown < totalHits && !isLoading;
 
     return (
       <AppStyled>
@@ -59,7 +60,7 @@ class App extends Component {
         </ImageGallery>
         {isLoading && <Loader />}
         {showLoadMoreBtn && <Button label="Load more" onClick={this.handleLoadMoreBtnClick} />}
-        {showModal && <Modal onClose={this.toggleModal} largeImg={this.state.selectedImage} />}
+        {showModal && <Modal onClose={this.toggleModal} largeImg={selectedImage} />}
       </AppStyled>
     );
   }
