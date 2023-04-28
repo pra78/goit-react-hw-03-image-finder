@@ -37,10 +37,9 @@ class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   }
 
-  handlePictureClick = (event) => {
+  handlePictureClick = (largeImageURL) => {
     this.toggleModal();
-    const image = event.currentTarget.dataset.large;
-    this.setState({ selectedImage: image });
+    this.setState({ selectedImage: largeImageURL });
   }
 
   toggleModal = () => {
@@ -49,17 +48,18 @@ class App extends Component {
 
   render() {
     const { photos, searchQuery, isLoading, showModal } = this.state;
-    const showLoadMoreBtn = photos.length > 0 && !isLoading;
+    console.log(photos.length);
+    const showLoadMoreBtn = photos.length >= 12 && !isLoading;
 
     return (
       <AppStyled>
         <SearchBar onSubmit={this.handleSubmit} />
         <ImageGallery >
-          <ImageGalleryItem pics={photos} alt={searchQuery} onClick={this.handlePictureClick} />
+          <ImageGalleryItem pics={photos} alt={searchQuery} onImageClicked={this.handlePictureClick} />
         </ImageGallery>
         {isLoading && <Loader />}
         {showLoadMoreBtn && <Button label="Load more" onClick={this.handleLoadMoreBtnClick} />}
-        {showModal && <Modal onClose={this.toggleModal} onClick={this.handlePictureClick} largeImg={this.state.selectedImage} />}
+        {showModal && <Modal onClose={this.toggleModal} largeImg={this.state.selectedImage} />}
       </AppStyled>
     );
   }

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { ImageGalleryItemImageStyled, ImageGalleryItemStyled } from "./ImageGalleryItem.styled";
 
-const ImageGalleryItem = ({ pics, alt, onClick }) => {
+const ImageGalleryItem = ({ pics, alt, onImageClicked }) => {
     return (  
-        pics.map(pic => (<ImageGalleryItemStyled key={pic.id}>
-            <ImageGalleryItemImageStyled src={pic.webformatURL} alt={"a picture of " + alt} data-large={pic.largeImageURL} onClick={onClick} />
+        pics.map(({id, webformatURL, largeImageURL }) => (<ImageGalleryItemStyled key={id} onClick={() => (onImageClicked(largeImageURL))} >
+            <ImageGalleryItemImageStyled src={webformatURL} alt={"a picture of " + alt} />
         </ImageGalleryItemStyled >))
         
     );
@@ -12,7 +12,7 @@ const ImageGalleryItem = ({ pics, alt, onClick }) => {
 
 ImageGalleryItem.propTypes = {
     alt: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onImageClicked: PropTypes.func.isRequired,
     pic: PropTypes.arrayOf(PropTypes.exact({
         id: PropTypes.string.isRequired,
         webformatURL: PropTypes.string.isRequired,
