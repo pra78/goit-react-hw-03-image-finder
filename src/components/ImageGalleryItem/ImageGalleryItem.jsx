@@ -13,8 +13,8 @@ const ImageGalleryItem = ({ pics, alt, onImageClicked }) => {
 ImageGalleryItem.propTypes = {
     alt: PropTypes.string.isRequired,
     onImageClicked: PropTypes.func.isRequired,
-    pic: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.string.isRequired,
+    pics: PropTypes.arrayOf(PropTypes.exact({
+        id: PropTypes.number.isRequired,
         webformatURL: PropTypes.string.isRequired,
         largeImageURL: PropTypes.string.isRequired,
     }))
